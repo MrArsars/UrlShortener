@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+    app:
+        build: .
+        container_name: laravel_app
+        restart: always
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www/html
+        environment:
+            - APP_ENV=local
+            - APP_KEY=base64:V/GntrwSWpsKLAS9mp34AGwWamVkxXFMDtl7bxzs704=
+            - APP_DEBUG=true
+            - APP_URL=http://localhost:8000
+            - DB_CONNECTION=sqlite
+            - SESSION_DRIVER=database
+            - CACHE_STORE=database
+        depends_on: []
