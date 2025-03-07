@@ -1,30 +1,34 @@
-# Use the official PHP image with Apache
-FROM php:8.2-apache
+FROM php:8.4.3-cli
 
-# Install required extensions
-RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev \
-    && docker-php-ext-configure gd \
-    && docker-php-ext-install gd pdo pdo_mysql mbstring
+# Install necessary dependencies
+RUN apt-get update -y && apt-get install -y \
+    libsqlite3-dev \
+    libonig-dev \
+    zip unzip git curl \
+    nodejs npm \
+    supervisor \
+    && docker-php-ext-install pdo pdo_sqlite mbstring
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /app
 
-# Copy Laravel project files
-COPY . .
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy application files into the container
+COPY . /app
 
 # Install Composer dependencies
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port 80
-EXPOSE 80
+# Install NPM dependencies, including Vite
+RUN npm install
 
-# Start Apache server
-CMD ["apache2-foreground"]
+# Expose the ports that the app will use
+EXPOSE 8000 5173
+
+# Create supervisord configuration file
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Start supervisord in the container
+CMD ["/usr/bin/supervisord"]
