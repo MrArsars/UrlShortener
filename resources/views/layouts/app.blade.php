@@ -19,8 +19,19 @@
         <div class="logo_title text-2xl md:text-3xl font-bold">Min.io</div>
     </a>
     <div class="navigation hidden md:flex flex-row">
-        <a class="nav_button text-base hover:text-black text-gray-700 cursor-pointer mr-4" href="{{url('/login')}}">Login</a>
-        <a class="nav_button text-base hover:text-black text-gray-700 cursor-pointer" href="{{url('/register')}}">Register</a>
+        @guest
+            <a class="nav_button text-base hover:text-black text-gray-700 cursor-pointer mr-4" href="{{url('/login')}}">Login</a>
+            <a class="nav_button text-base hover:text-black text-gray-700 cursor-pointer mr-4"
+               href="{{url('/register')}}">Register</a>
+        @endguest
+        
+        @auth
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="nav_button text-base hover:text-black text-gray-700 cursor-pointer">Logout
+                </button>
+            </form>
+        @endauth
     </div>
 </header>
 @yield('content')
