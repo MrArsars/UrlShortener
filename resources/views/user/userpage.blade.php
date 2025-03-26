@@ -1,39 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    @if($shortenedUrls->isEmpty())
-        <p class="text-gray-600">You haven't shortened any URLs yet.</p>
-    @else
-        <table class="w-full border-collapse border border-gray-300">
-            <thead>
-            <tr class="bg-gray-100">
-                <th class="border p-2">Short URL</th>
-                <th class="border p-2">Original URL</th>
-                <th class="border p-2">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+    <div class="max-w-5xl flex w-full">
+        @if($shortenedUrls->isEmpty())
+            <p class="text-gray-600">You haven't shortened any URLs yet.</p>
+        @else
             @foreach($shortenedUrls as $shortUrl)
-                <tr>
-                    <td class="border p-2">
-                        <a href="{{ url($shortUrl->short_code) }}" class="text-blue-600 underline" target="_blank">
-                            {{ url($shortUrl->short_code) }}
-                        </a>
-                    </td>
-                    <td class="border p-2 truncate">
-                        <a href="{{ $shortUrl->original_url }}" class="text-blue-600 underline" target="_blank">
-                            {{ Str::limit($shortUrl->original_url, 50) }}
-                        </a>
-                    </td>
-                    <td class="border p-2">
-                        <form>
-                            @csrf
-                            <button type="submit" class="text-red-600">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                <div
+                    class="bg-white rounded-2xl shadow-lg p-4 md:p-6 box-border w-full md:w-[100%] flex flex-row justify-between">
+                    <div class="flex flex-col">
+                        <p class="font-bold">Shortened:</p>
+                        <a href="{{ url($shortUrl->short_code) }}" target="_blank">{{ url($shortUrl->short_code) }}</a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-bold">Original:</p>
+                        <a href="{{ url($shortUrl->original_url) }}"
+                           target="_blank">{{ Str::limit($shortUrl->original_url, 70) }}</a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="font-bold">Clicks:</p>
+                        <p>147</p>
+                    </div>
+                </div>
             @endforeach
-            </tbody>
-        </table>
-    @endif
+        @endif
+    </div>
 @endsection
