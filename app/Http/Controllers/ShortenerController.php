@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ShortenerController extends Controller
@@ -22,6 +23,7 @@ class ShortenerController extends Controller
         $shortUrl = ShortUrl::create([
             'original_url' => $request->url,
             'short_code' => $shortCode,
+            'user_id' => Auth::id(),
         ]);
 
         return back()->with('short_url', url($shortUrl->short_code));
