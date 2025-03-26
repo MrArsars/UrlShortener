@@ -22,10 +22,35 @@
         </form>
 
         @if(session('short_url'))
-            <div class="mt-5 text-lg font-semibold text-center">
-                Shortened URL: <a href="{{ session('short_url') }}" target="_blank"
-                                  class="text-blue-600 break-all">{{ session('short_url') }}</a>
+            <div class="mt-5 text-lg font-semibold text-center flex flex-row">
+                Shortened URL:
+                <a href="{{ session('short_url') }}" target="_blank" id="shortenedUrl"
+                                  class="text-blue-600 break-all ml-2">{{ session('short_url') }}</a>
+                <img src="icons/copy.png" class="w-6 h-6 cursor-pointer ml-3 hover:opacity-90" onclick="function copyDivText() {
+                    let link = document.getElementById('shortenedUrl').textContent;
+                    navigator.clipboard.writeText(link)
+                        .catch(err => console.error('Failed to copy: ', err));
+                }
+                copyDivText()"/>
             </div>
         @endif
+
+        <div class="flex md:flex-row flex-col md:max-w-7xl w-full md:bottom-1/4 bottom-5 absolute justify-between">
+            <div class="card bg-white shadow-lg flex flex-col p-6 rounded-2xl mx-auto md:max-w-[30%] md:m-0 w-full max-w-[85%] md:my-0 mb-4">
+                <img src="icons/lightning.png" class="w-8 h-8 mb-4" />
+                <p class="font-bold text-2xl mb-2">Lightning Fast</p>
+                <p class="text-gray-700 text-xl">Shorten URLs instantly with our optimized system</p>
+            </div>
+            <div class="card bg-white shadow-lg flex flex-col p-6 rounded-2xl mx-auto md:max-w-[30%] md:m-0 w-full max-w-[85%] md:my-0 mb-4">
+                <img src="icons/shield.png" class="w-8 h-8 mb-4" />
+                <p class="font-bold text-2xl mb-2">Secure Links</p>
+                <p class="text-gray-700 text-xl">Your URLs are safe and protected with us</p>
+            </div>
+            <div class="card bg-white shadow-lg flex flex-col p-6 rounded-2xl mx-auto md:max-w-[30%] md:m-0 w-full max-w-[85%]">
+                <img src="icons/graph.png" class="w-8 h-8 mb-4" />
+                <p class="font-bold text-2xl mb-2">Analytics</p>
+                <p class="text-gray-700 text-xl">Track your link performance easily</p>
+            </div>
+        </div>
     </div>
 @endsection
