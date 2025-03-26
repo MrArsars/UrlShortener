@@ -6,6 +6,8 @@
 
     <title>Min.io</title>
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
@@ -24,16 +26,34 @@
             <a class="nav_button text-base hover:text-black text-gray-700 cursor-pointer mr-4"
                href="{{url('/register')}}">Register</a>
         @endguest
-        
+
         @auth
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="nav_button text-base hover:text-black text-gray-700 cursor-pointer">Logout
-                </button>
-            </form>
+            <div x-data="{ open: false }" class="relative">
+                <div @click="open = !open" class="flex justify-center items-center cursor-pointer">
+                    <img src="icons/user.png" class="w-6 h-6"/>
+                    <p class="ml-2">{{ Auth::user()->name }}</p>
+
+
+                    <div x-show="open" @click.away="open = false" class="bg-white absolute flex flex-col top-8 rounded-2xl shadow-lg">
+                        <a href="{{ url('/userpage') }}" class="flex flex-row items-center justify-center text-nowrap py-2 px-8 hover:bg-gray-100 w-full h-full">
+                            <img src="icons/link_black.png" class="w-4 h-4 mr-2">
+                            My links
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="nav_button text-base text-[#FF3232] black cursor-pointer flex flex-row items-center justify-center py-2 px-8 hover:bg-gray-100 w-full h-full">
+                                <img src="icons/logout.png" class="w-4 h-4 mr-2">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         @endauth
     </div>
 </header>
 @yield('content')
 </body>
 </html>
+
