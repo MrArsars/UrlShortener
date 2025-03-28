@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Click;
 use Illuminate\Http\Request;
 use App\Models\ShortUrl;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,9 @@ class ShortenerController extends Controller
     public function redirect($code)
     {
         $shortUrl = ShortUrl::where('short_code', $code)->firstOrFail();
+        Click::create([
+            'short_url_id' => $shortUrl->id,
+        ]);
         return redirect($shortUrl->original_url);
     }
 }

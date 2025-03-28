@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function userIndex()
     {
-        $shortenedUrls = Auth::user()->shortUrls()->get();
+        $shortenedUrls = Auth::user()->shortUrls()->withCount('clicks')->get();
         return view('user.userpage', compact('shortenedUrls'));
     }
 }

@@ -19,7 +19,7 @@
                     </div>
                     <div class="flex flex-col">
                         <p class="font-bold">Clicks:</p>
-                        <p>147</p>
+                        <p>{{ $shortUrl->clicks_count }}</p>
                     </div>
                 </div>
             @endforeach
